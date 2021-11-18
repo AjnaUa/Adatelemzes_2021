@@ -1,0 +1,16 @@
+book_filename: "Adatelemzés_2021"
+language:
+  ui:
+    chapter_name: "Fejezet "
+delete_merged_file: true
+output_dir: "docs"
+rmd_files:
+  [
+    "index.Rmd",
+    "Fejezet1.Rmd",
+    "Fejezet2.Rmd",
+    "Fejezet3.Rmd",
+    "Fejezet5.Rmd",
+    "Fejezet6.Rmd",
+    "Fejezet7.Rmd"
+  ]
