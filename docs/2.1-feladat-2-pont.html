@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="2.1 1. feladat (2 pont) | Adatelemzés_2021_házifeladatok" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="Tartalmazza a 2021 őszi félév házi feladat kiírásait." />
+
+
+<meta name="author" content="Ajna" />
+
+<meta name="date" content="2021-11-19" />
+
+
+<meta name="description" content="Tartalmazza a 2021 őszi félév házi feladat kiírásait.">
+
+<title>2.1 1. feladat (2 pont) | Adatelemzés_2021_házifeladatok</title>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#házi-feladatok-kiírásai"><span class="toc-section-number">1</span> Házi feladatok kiírásai</a>
+<ul>
+<li><a href="1.1-általános.html#általános"><span class="toc-section-number">1.1</span> Általános</a></li>
+<li><a href="1.2-technikai.html#technikai"><span class="toc-section-number">1.2</span> Technikai</a></li>
+<li><a href="1.3-github-megosztás.html#github-megosztás"><span class="toc-section-number">1.3</span> github megosztás</a></li>
+</ul></li>
+<li><a href="2-hf2.html#hf2"><span class="toc-section-number">2</span> HF 2.</a>
+<ul>
+<li><a href="2.1-feladat-2-pont.html#feladat-2-pont"><span class="toc-section-number">2.1</span> 1. feladat (2 pont)</a></li>
+<li><a href="2.2-feladat-1pont.html#feladat-1pont"><span class="toc-section-number">2.2</span> 2. feladat (1pont)</a></li>
+<li><a href="2.3-feladat-1pont-1.html#feladat-1pont-1"><span class="toc-section-number">2.3</span> 3. feladat (1pont)</a></li>
+</ul></li>
+<li><a href="3-hf-3..html#hf-3."><span class="toc-section-number">3</span> HF 3.</a>
+<ul>
+<li><a href="3.1-feladat-1.7-pont.html#feladat-1.7-pont"><span class="toc-section-number">3.1</span> 1. feladat (1.7 pont)</a></li>
+<li><a href="3.2-feladat-2-pont-1.html#feladat-2-pont-1"><span class="toc-section-number">3.2</span> 2. feladat (2 pont)</a></li>
+<li><a href="3.3-feladat-0.3-pont.html#feladat-0.3-pont"><span class="toc-section-number">3.3</span> 3. feladat (0.3 pont)</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="feladat-2-pont" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> 1. feladat (2 pont)</h2>
+<p><br>
+<br></p>
+<div id="csm" class="section level4" number="2.1.0.1">
+<h4><span class="header-section-number">2.1.0.1</span> <em>CSM Adatbazis leirasa</em></h4>
+<p><br></p>
+<p>A <strong>CSM_data.RDS</strong> adatbazis 2014-ben es 2015-ben megjelent mozifilmek sikeressegenek/nepszerusegenek ez elemzesehez, predikciojahoz szukseges informaciokat tartalmaz.
+A sikeresseg/nepszeruseg meroszama a 0-10 skalan mero <code>Ratings</code> valtozo, ez all az elemzes kozeppontjaban.
+Tovabbi valtozok olyan un. hagyomanyos es kozossegi mediabol vett mutatok (CSM = <em>conventional and social media features</em>), amelyek ebbol a szempontbol relevansak lehetnek.
+Az adatok forrasa: <em>UCI ML repository</em>.</p>
+<p>A csv fajlban szereplo valtozok rendre az alabbiak:
+<br>
+<code>Movie</code>: film cime<br />
+<code>Year</code> : megjelenes eve<br />
+<code>Ratings</code> : film rating-je, 0-10 folytonos skalan<br />
+<code>Genre</code> : mufaj, pl. akcio, kaland, drama… kulon nem nevesitjuk, nem lesz ra szukseg<br />
+<code>Gross</code> : filmbol szarmazo bevetel (worldwide)<br />
+<code>Budget</code> : film ktgvetese<br />
+<code>Screens</code> : mozik szama az USA-ban, ahol vetitesre kerult<br />
+<code>Sequel</code> : onallo film vagy sorozat (1, 2, 3 …)<br />
+<code>Sentiment</code> : +/semleges/-, tweet-ek alapjan<br />
+<code>Views</code> : Youtube, elozetes megtekintesek szama<br />
+<code>Likes</code> : Youtube<br />
+<code>Dislikes</code> : Youtube<br />
+<code>Comments</code> : Youtube<br />
+<code>AggregateFollowers</code> : foszereplo szinesz, Twitter<br />
+<code>onallo</code> : 1 hogyha önmagában áll, 0 hogyha sorozat</p>
+<p><br>
+<br></p>
+<p>Olvasd be a <strong>CSM_data.RDS</strong> file-t, legyen az adatbazis neve <code>df_CSM</code>!
+</br>
+<code>df_CSM &lt;- readRDS ("CSM_data.RDS")</code> (ez akkor fog működni, ha a letöltött adatbázist a <em>working directory</em> mappájába teszed. Ezt megtalálod a <code>getwd()</code> parancs lefuttatásával )</p>
+<p>Keszits egy uj valtozot <code>likes_dislikes</code>, amely megmutatja, hogy egy film hany like es dislike ertekelest kapott osszesen!
+Hozz letre egy <code>rel_tetszett</code> nevu valtozot, ami megmutatja, hogy a nezok hany szazalekanak tetszett a film!</p>
+<p>Keszits top10-es listat azoknak az onallo filmeknek (nem sorozat) a cimeirol, amik a legtobb embernek tetszettek (Likes)!
+Tuntesd fel a relativ tetszesindexet is! Melyik volt ezek közül a legvitatottabb film?</p>
+<p>Keszits 2 hisztogramot egymas alá, egyiken a 2014-ben, masikon a 2015-ben megjelent filmek Ratings ertekei szerepeljenek! Szorgalmi: rakhatunk rá azonos várható értékű és szórási normális eloszlást.</p>
+<p>Keszits pontdiagramot és tegyel ra simító görbét a teljes tartományra konfidenciaintervallum nélkül a Gross-Budget valtozok kapcsolatanak abrazolasara! Aszerint szinezd, hogy kapott-e 15.000 like-ot!</p>
+<p>Keszitsd el a csatolt kepet!
+</br></p>
+<hr class="border">
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2-hf2.html"><button class="btn btn-default">Previous</button></a>
+<a href="2.2-feladat-1pont.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

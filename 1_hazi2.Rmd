@@ -1,0 +1,162 @@
+# HF 2. {#hf2}
+
+<hr class="border">
+## 1. feladat (2 pont) 
+
+<br>
+<br>
+```{r setup , include=F}
+knitr::opts_chunk$set (eval = F,
+                       echo = F)
+```
+
+
+#### *CSM Adatbazis leirasa* {#csm}
+
+<br>
+
+A **CSM_data.RDS** adatbazis 2014-ben es 2015-ben megjelent mozifilmek sikeressegenek/nepszerusegenek ez elemzesehez, predikciojahoz szukseges informaciokat tartalmaz.
+A sikeresseg/nepszeruseg meroszama a 0-10 skalan mero `Ratings` valtozo, ez all az elemzes kozeppontjaban.
+Tovabbi valtozok olyan un. hagyomanyos es kozossegi mediabol vett mutatok (CSM = *conventional and social media features*), amelyek ebbol a szempontbol relevansak lehetnek. 
+Az adatok forrasa: *UCI ML repository*.
+
+A csv fajlban szereplo valtozok rendre az alabbiak: 
+<br>
+`Movie`: film cime  
+`Year` : megjelenes eve  
+`Ratings` : film rating-je, 0-10 folytonos skalan  
+`Genre` : mufaj, pl. akcio, kaland, drama... kulon nem nevesitjuk, nem lesz ra szukseg  
+`Gross` : filmbol szarmazo bevetel (worldwide)  
+`Budget` : film ktgvetese  
+`Screens` : mozik szama az USA-ban, ahol vetitesre kerult  
+`Sequel` : onallo film vagy sorozat (1, 2, 3 ...)  
+`Sentiment` : +/semleges/-, tweet-ek alapjan  
+`Views` : Youtube, elozetes megtekintesek szama  
+`Likes` : Youtube  
+`Dislikes` : Youtube  
+`Comments` : Youtube  
+`AggregateFollowers` : foszereplo szinesz, Twitter  
+`onallo` : 1 hogyha önmagában áll, 0 hogyha sorozat
+
+<br>
+<br>
+
+
+Olvasd be a **CSM_data.RDS** file-t, legyen az adatbazis neve `df_CSM`!
+</br>
+`df_CSM <- readRDS ("CSM_data.RDS")` (ez akkor fog működni, ha a letöltött adatbázist a *working directory* mappájába teszed. Ezt megtalálod a `getwd()` parancs lefuttatásával )
+
+```{r }
+df <- readRDS ("CSM_data.RDS")
+library (tidyverse)
+theme_set (theme_classic())
+```
+
+Keszits egy uj valtozot `likes_dislikes`, amely megmutatja, hogy egy film hany like es dislike ertekelest kapott osszesen!
+Hozz letre egy `rel_tetszett` nevu valtozot, ami megmutatja, hogy a nezok hany szazalekanak tetszett a film! 
+
+```{r}
+df <-  df %>% 
+  mutate (likes_dislikes = Likes + Dislikes ,
+          rel_tetszett = Likes / likes_dislikes) 
+  
+```
+
+Keszits top10-es listat azoknak az onallo filmeknek (nem sorozat) a cimeirol, amik a legtobb embernek tetszettek (Likes)!
+Tuntesd fel a relativ tetszesindexet is! Melyik volt ezek közül a legvitatottabb film?
+
+```{r}
+  df %>%
+    filter ( onallo == 1 ) %>% 
+    arrange( desc ( Likes ) ) %>%
+    select ( Movie , Likes , rel_tetszett ) %>%
+    head ( 10 )
+```
+  
+
+Keszits 2 hisztogramot egymas alá, egyiken a 2014-ben, masikon a 2015-ben megjelent filmek Ratings ertekei szerepeljenek! Szorgalmi: rakhatunk rá azonos várható értékű és szórási normális eloszlást.
+
+```{r}
+ggplot (df , aes (x = Ratings)) +
+  geom_histogram ( aes (y = ..density..) , binwidth = 0.5) +
+  stat_function ( fun = dnorm , 
+                  args = list (mean = mean (df$Ratings) ,
+                               sd = sd (df$Ratings)) ,
+                  color = "red" ) +
+  geom_vline (aes (xintercept = median (df$Ratings)) ,
+              linetype = 2) +
+  facet_wrap ( ~ Year)
+```
+
+Keszits pontdiagramot és tegyel ra simító görbét a teljes tartományra konfidenciaintervallum nélkül a Gross-Budget valtozok kapcsolatanak abrazolasara! Aszerint szinezd, hogy kapott-e 15.000 like-ot!
+
+Keszitsd el a csatolt kepet!
+</br>
+```{r , fig.show = 'asis'}
+  ggplot ( df , aes ( x = rel_tetszett , y = Ratings,
+                      color =  onallo  ) ) + 
+    geom_point ( alpha = 0.3 ) +
+    geom_smooth ( method = "lm" ) +
+    facet_grid ( . ~ Year ) +
+    labs ( title = "Filmtetszés és a rating kapcsolata 
+önálló filmek és sorozatok esetén a két évben" ,
+           y = "Rating" ,
+           x = "Hány %-nak tetszett a film (rel_tetszett)") +
+    theme_classic ( )
+
+```
+
+
+<hr class="border">
+## 2. feladat (1pont)
+
+<br>
+
+Import: ld. 1. feladat
+</br>
+Állítsd elő az alábbi termékenységi mutató változását ábrázoló képet az `OECD_data`-ból.
+</br>
+Készíts egy olyan ábrát is, amin a *fertilitás, populáció és várható élettartam változása szerepel egymás alatt* ugyanezen időszak alatt. Ha lehet egy ábrára kerüljön a megoldás. (*Tipp*: long-wide formátum beállítása az elemzés elején.)
+
+```{r, fig.show = 'asis'}
+fertility <- readRDS ("OECD_data.RDS")
+
+ggplot (data = fertility , mapping = aes(x = TIME, y = fertility, color = LOCATION)) +
+  geom_line ( ) + 
+  labs (x = "Year" , y = "Fertility" , color = "Countries" , title = "Fertility rates",
+    subtitle = "1960 - 2017", # tag = "Figure 1",
+    caption = "total number of children to each woman \n if she were to live to the end of her child-bearing years") +
+  geom_smooth ( mapping = aes(x = TIME, y = fertility , group = 1) , color = "black") +
+  theme_classic() 
+```
+
+
+<hr class="border">
+## 3. feladat (1pont)
+
+<br>
+
+Import: `df_rakreg <- readRDS (url ("http://tinyurl.com/y6c2vvwv"))`
+
+Állítsd elő a nemenkénti és korcsoportos incidenciák alakulását mutató ábrát a C18 rák esetén a rákregiszter adataiból. Ehhez a C18 típusú megbetegedésre van szükség 2015-ből, korra, nemre és megyére csoportosított incidencia mutatók számításával (100.000 főre eső megbetegedések száma). Segítségül: 
+https://research.physcon.uni-obuda.hu/RakregiszterVizualizator/
+
+```{r , fig.show = 'asis' , fig.dim= c(9, 5.5)}
+RawData <- readRDS (url ("http://tinyurl.com/y6c2vvwv"))
+
+RawData2 <- RawData %>% 
+  filter (ICDCode == "C18" & Year == 2015) %>% 
+  group_by (County , Sex , Age) %>% 
+  summarise (Inc = sum (N) / sum (Population)*100000)
+
+ggplot (RawData2 , aes (x = Age , y = Inc , color = Sex)) + 
+  geom_line () +
+  facet_wrap ( ~ County , nrow = 3) +
+  labs ( title = "Nemenkénti és korcsoportos incidenciák a C18 rák esetén" ,
+        substitle = "megyénkénti bontásban 2015-ben" ,
+        color = "nem" ,
+        x = "kor" ,
+        y = "incidencia")
+
+```
+

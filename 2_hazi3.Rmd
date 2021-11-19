@@ -1,0 +1,211 @@
+# HF 3.
+
+<hr class="border">
+## 1. feladat (1.7 pont) 
+
+<br>
+<br>
+
+```{r setup , include=F}
+knitr::opts_chunk$set (eval = F,
+                       echo = F)
+```
+
+A [CSM adatbázis leírását](#csm) korábban megadtuk.
+<br>
+
+
+Olvasd be a **CSM_data.RDS** file-t, legyen az adatbazis neve `df_CSM`!
+
+```{r }
+#df <- readRDS ("CSM_data.RDS")
+
+```
+Ahol szükséges, alakítsd át a változó típusát.
+
+```{r}
+# (1pont)
+ 
+  
+```
+
+Keszits gyakorisági eloszlast a Sequel valtozora!
+Hany olyan film van, amely vmilyen sorozatnak nem az első epizodja?
+
+
+```{r}
+# (2pont)  
+
+
+
+```
+  
+Keszits egy olyan uj valtozot `sorozat`, amely </br>
+  -  **0** erteket vesz fel akkor, ha a film onallo vagy egy sorozat elso epizodja  </br>
+  -  **1** erteket egyebkent!  </br>
+Ellenőrizd le magad az `onallo`változóval (*ha minden önálló film nem sorozat és minden sorozat nem önálló film*)
+
+```{r}
+# (2 pont)
+
+```
+
+Hozz letre egy haszonindex nevu valtozot, ami megmutatja, hogy hanyszor tobb bevetelt `Gross` hozott a film, mint a raforditott kiadas `Budget`! Milyen tipusu az uj valtozo?
+
+Ha eddig nem tetted, add hozza az uj valtozokat (sorozat, haszonindex) a dataframe-hez!
+
+```{r }
+# (3 pont)  
+
+
+
+```
+Átlagosan hány like-ot kapnak a különböző műfajú filmek?
+</br>
+```{r }
+# (1 pont)  
+
+
+```
+Írasd ki azokat a filmeket, amelyek </br>
+- 2014-ben 5-nél alacsonyabb értékelést kaptak  </br>
+- sorozatok és nem hozta vissza a bevétel a ráfordítást  </br>
+ </br>
+- A medián Like értékét az abszolút értékben 10-nél kisebb Sentiment-ű filmeknek.  </br>
+- A medián Dislikes értékét a -10-nél kisebb Sentiment-ű filmeknek.  </br>
+- Az átlagos Budget értékét azoknak a filmeknek, ahol a színész több, mint 20 millió követővel rendelkezik. </br>
+```{r }
+# (5 pont)  
+
+
+```
+
+Sorold fel (parancshívással) az uj adatbazisban az összes numerikus valtozót! (tipp: apply csalad) 
+</br> Ellenőrizd, hogy értelmes-e az eredmény, ha kell, ugorj vissza az 1. pontra.
+```{r }
+# (1 pont)  
+
+
+```
+
+Standardizáld az összes numerikus változót és az eredményt mentsd el a `df_stand` dataframe-be.
+
+```{r }
+# (1 pont)  
+
+
+```
+
+Ellenőrizd a várható értéküket és szórásukat! </br>
+Mit kell hogy kapj, ha a `df_stand` df-et lestandardizálod az oszlopok mentén?
+
+```{r }
+# (1 pont)  
+
+
+```
+
+<hr class="border">
+
+## 2. feladat (2 pont)
+
+</br>
+
+Generálj le egy 100-as hosszúságú standard normális eloszlásból származó számsorozatot és mentsd el `norm_vektor` néven. Hogy reprodukálható legyen, használd a 100-as magot. </br>
+Hozz létre egy `elojel_vektor`-t, ami `norm_vektor` nem negatív elemeinél `positive`, míg a negatív elemeinél `negative` értéket vesz fel.
+
+```{r}
+
+set.seed (100)
+
+# (2 pont)
+
+```
+Válaszd ki a negatív számokat a norm_vektor-ból:
+```{r}
+
+# (1 pont)
+
+```
+A számok hány százaléka haladja meg a 2-t abszolút értékben?
+```{r}
+
+# (1 pont)
+
+
+```
+Mit csinál a `%/%` és a `%%` operátor?
+Hány egész (*1-gyel maradéktalanul osztható*) szám van a norm_vektor-ban?
+```{r}
+
+# (2 pont)
+
+
+```
+Mi a típusa az `elojel_vektor` és a `norm_vektor`-nak? Alakítsd át egy sorbarendezhető faktorrá `fakt_vektor`, és cimkézd át +/- jelekre. </br>
+
+```{r}
+
+# (2 pont)
+
+
+```
+Mi történik, ha a `fakt_vektor`-t szöveggé/numerikussá/logikaivá transzformáljuk? </br>
+
+```{r}
+
+# (1 pont)
+
+
+```
+A `fakt_vektor`-ból hozz létre egy logikai vektort, ami pozitív értékeknél vesz fel igaz értéket. </br>
+```{r}
+
+# (1 pont)
+
+
+```
+
+
+Mi történik, ha cbind-del összefűzöd ezt a négy vektort? Mi az így létrejött objektum típusa és a dimenziója? </br>
+```{r}
+
+# (1.5 pont)
+
+
+
+```
+Hozz létre egy dataframe-et az eddig előállítot négy vektorodból. Mik a változók típusai, a df dimenziója? </br>
+```{r}
+
+# (1.5 pont)
+
+
+```
+Készíts egy abszolút és relatív gyakorisági táblát a +/- előfordulásra.
+Készíts egy összefoglaló leíró statisztikát a normális változóra. Mennyi lesz a 2.5 és 97.5 percentilis?</br>
+Bontsd + és - értékek szerint a kimutatást. </br>
+
+```{r}
+
+# (4 pont)
+
+
+```
+Készíts egy hisztogramot, boxplotot a normális változó eloszlására! 
+Mit kapsz, ha a `norm_vektor`-t behívod a plot parancsba? A képeket az órán tanult argumentumok alapján tetszőlegesen, értelemszerűen formázd (pl. megfelelő feliratok).
+
+```{r}
+
+# (3 pont)
+
+
+```
+*SZORGALMI* baseR-ben színezd ki a pontokat: 1 és -1 között zöld, többi pozitív piros , többi negatív kék. A felirat alul szerepeljen. *(ez a motíváció/demonstráció, hogy miért használtunk ggplot2-t)* Segítségül használd a netet (pl. [base-plotting-in-r](https://towardsdatascience.com/base-plotting-in-r-eb365da06b22)
+
+
+<hr class="border">
+## 3. feladat (0.3 pont)
+
+</br>
+Válaszd ki a saját témádat és színpalettádat, amit a szakdolgozatodban is használnál, állítsd be alapbeállításként és ezalapján formázd meg a gapminder egyik ábráját, amit órán készítettünk.
