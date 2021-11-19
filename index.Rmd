@@ -27,15 +27,15 @@ knitr::write_bib(c(
 ), 'packages.bib')
 
 
-knitr::opts_chunk$set (eval = T,
-                       echo = F,
+knitr::opts_chunk$set (eval = T ,
+                       echo = F ,
                        results = "hide" ,
                        fig.show = "hide" ,
                        error = T  ,
                        message = F ,
                        warning = F ,
-                       comment = ">#",
-                       collapse = T,
+                       comment = ">#" ,
+                       collapse = T ,
                        fig.dim = c (6 , 4))
 
 options (tibble.print_min = 4L , tibble.print_max = 4L)
