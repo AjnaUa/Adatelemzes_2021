@@ -19,16 +19,6 @@ Tartalmazza az Adatelemzés R-ben 2021 őszi félév házi feladatok kiírásait
 
 Idén 7*(4+1) pontért készítették hetente, amiből a 6 legjobb számított. Egymást értékelték megoldókulcs alapján 1 pontért.
 
-## Technikai
-
-A bookdown-t a következő dokumentációk alapján készítettem:  
-
-1. [Authoring Books and Technical Documents with R Markdown](https://bookdown.org/yihui/bookdown/) Főleg az első két fejezet. 
-2. Letöltöttem gitHub-ról a [bookdown-demo](https://bookdown.org/yihui/bookdown/get-started.html)-t.  
-3. RStudion belül `New Project`-en belül kiválasztottam a `bookdown` lehetőséget. Ez némivel részletesebb, és ebbe pakoltam át az `RMD` fájlokat.  
-    - kitöröltem a fejlécet és az elejét, hogy **#Fejezetcím**-mel indulhasson 
-    - **{#ID}** képeztem a hivatkozni kívánt fejezetekre 
-    - `index.Rmd`-n belül megadtam a `opts_chunk$set`-et 
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
@@ -56,14 +46,3 @@ library (tidyverse)
 
 
   
-## github megosztás
-
-[Ez](https://bookdown.org/yihui/bookdown/github.html) volt a kiindulópont.
-
-[Rmd cheat sheet](file:///C:/Users/Ajna/Downloads/rmarkdown%20(1).pdf)
-
-Marci [könyve](https://marcellgranat.github.io/Data-Analysis/seminar1.html#layout)
-
-Hadley ajánlotta: 
-1. [R packages-ben](https://r-pkgs.org/git.html)
-2. <https://happygitwithr.com/index.html>
