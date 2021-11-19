@@ -1,7 +1,7 @@
 book_filename: "Adatelemzés_2021"
 language:
   ui:
-    chapter_name: "Fejezet "
+    chapter_name: "Hét "
 delete_merged_file: true
 output_dir: "docs"
 rmd_files:
