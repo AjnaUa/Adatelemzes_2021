@@ -6,18 +6,9 @@ output:
     toc_depth: 3
     toc_float:
       toc_collapsed: FALSE
-      #smooth_scroll: FALSE # nem tud mit csinál
     code_folding: show
     theme:
       bootswatch : minty
-      # bg: "#202123"
-      # fg: "#B8BCC2"
-      # primary: "#EA80FC"    # toc színe
-      # secondary: "#00FFFF"  # folding színe
-      # base_font:
-      #   google: Prompt
-      # heading_font:
-      #   google: Proza Libre
 ---
 
 ```{r setup, include=FALSE}
@@ -40,7 +31,6 @@ options (tibble.print_min = 4L , tibble.print_max = 4L)
 
 library (tidyverse)
 
-setwd("C:/Users/Ajna/Desktop/2021 Adatelemzés R-ben")
 df <- readRDS ("GSS_SM")
 
 ```
@@ -61,7 +51,7 @@ Van-e összefüggés az apa és anya iskolai végzettsége között? Ha igen, mi
 <hr class = "border">
 ## Minőségi ismérvek között (nominális szint)
 
-Két minőségi ismérv közötti kétváltozós kapcsolatvizsgálati módszerrel vizsgálható: **asszocsiáció**. Kereszttáblás elemzéssel végezzük, a kapcsolatszorossági mutató **C**.
+Két minőségi ismérv közötti kétváltozós kapcsolatvizsgálati módszerrel vizsgálható: **asszociáció**. Kereszttáblás elemzéssel végezzük, a kapcsolatszorossági mutató **C**.
 
 ### Hipotézisek:
 
