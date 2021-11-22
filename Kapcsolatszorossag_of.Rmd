@@ -1,0 +1,249 @@
+---
+title: ""
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      toc_collapsed: FALSE
+      #smooth_scroll: FALSE # nem tud mit csinál
+    code_folding: show
+    theme:
+      bootswatch : minty
+      # bg: "#202123"
+      # fg: "#B8BCC2"
+      # primary: "#EA80FC"    # toc színe
+      # secondary: "#00FFFF"  # folding színe
+      # base_font:
+      #   google: Prompt
+      # heading_font:
+      #   google: Proza Libre
+---
+
+```{r setup, include=FALSE}
+if (requireNamespace("thematic")) 
+  thematic::thematic_rmd(font = "auto")
+
+knitr::opts_chunk$set (cache = T,
+                       eval = T , 
+                       echo = T ,
+                       error = F ,
+                       message = F ,
+                       warning = F ,
+                       comment = "#>" ,
+                       collapse = T ,
+                       fig.dim = c (9 , 6),
+                       out.width = "85%",
+                       fig.align = "center")
+
+options (tibble.print_min = 4L , tibble.print_max = 4L)
+
+library (tidyverse)
+
+setwd("C:/Users/Ajna/Desktop/2021 Adatelemzés R-ben")
+df <- readRDS ("GSS_SM")
+
+```
+
+<style type="text/css">
+
+.border{
+  border-top: 3px solid #08519C;
+}
+
+</style>
+
+# Kapcsolatszorossági módszerek áttekintése
+
+
+Van-e összefüggés az apa és anya iskolai végzettsége között? Ha igen, milyen jellegű (irány, erősség). A kérdést különbözőképpen is megfogalmazzuk és több statisztikai módszerrel vizsgáljuk. Az adatok a [GSS](https://gss.norc.org/)-ből származnak.
+
+<hr class = "border">
+## Minőségi ismérvek között (nominális szint)
+
+Két minőségi ismérv közötti kétváltozós kapcsolatvizsgálati módszerrel vizsgálható: **asszocsiáció**. Kereszttáblás elemzéssel végezzük, a kapcsolatszorossági mutató **C**.
+
+### Hipotézisek:
+
+**H0:** apák és anyák végzettsége között nincs kapcsolat (függetlenség) 
+
+**H1:** apák és anyák végzettsége között van kapcsolat 
+
+
+### Előfeltétel: 
+
+$f* \ge 5$
+
+```{r}
+table (df$padeg)
+table (df$degree)
+
+chi_teszt <- chisq.test (df$padeg , df$madeg)
+
+# megfigyelés/valóság
+chi_teszt$observed
+
+# f* függetlenség esetén elvárt
+chi_teszt$expected
+
+
+```
+Az előfeltétel két esetben sérül, ugyanakkor 25 esetből elhanyagolható hozzájárulással bír, úgyhogy ettől eltekinthetünk.
+
+### Teszt eredménye:
+```{r}
+chi_teszt 
+
+chi_teszt2 <- gmodels::CrossTable (df$padeg , df$madeg,
+                     prop.c = F, prop.r = T, prop.t = F,
+                     digits = 2, prop.chisq = T,
+                     chisq = T)
+
+(C <- sqrt (1306.1/4/2042))
+```
+Tehát szignifikáns kapcsolatot mutathatunk ki, amely közepes erősségű. 
+
+### Vizuálisan:
+*Ábrák:*
+```{r asszociacio, fig.cap="Szülők iskolai végzettségének együttes előfordulásai"}
+# mozaik
+mosaicplot (df$padeg ~ df$madeg)
+
+# csempe - gyakoriság szerinti színezés
+df %>% 
+  group_by (padeg , madeg) %>% 
+  summarise( gyak = n()) %>% 
+
+ggplot ( aes (x = padeg , y = madeg , fill = gyak)) +
+  geom_tile ()
+
+library (ggmosaic)
+
+na.omit (df) %>% 
+  mutate (padeg = factor (padeg),
+          madeg = factor (madeg)) %>% 
+  group_by (padeg , madeg) %>% 
+  summarise( gyak = n()) %>% 
+ggplot ( ) +
+  geom_mosaic ( aes (weight = gyak,
+                     x = product (padeg) , 
+                     fill = madeg)) +
+  theme_classic ()
+
+```
+
+Ha szeretnénk tudni, honnan származik a legnagyobb eltérés:
+```{r fig.cap="A függetlenséghez képesti eltérések nagysága iskolaivégzettség-páronként"}
+chi_teszt$stdres
+
+as.data.frame (chi_teszt$stdres) %>% 
+  ggplot ( aes (df.padeg , df.madeg , fill = Freq)) +
+  geom_tile ()
+```
+<hr class = "border">
+## Sorbarendezhető minőségi (ordinális szint)
+
+
+Rangkorrelációt használhatunk, mivel a végzettség sorbarendezhető, ordinális skálán mér. A sok kapcsolt rang miatt mégkorrektebb a Kendall-féle rangkorreláció.
+
+### Hipotézisek:
+
+$$ H0: \rho = 0$$ 
+$$ H1: \rho  \ne 0$$ 
+
+### Teszt eredménye:
+```{r}
+
+cor.test (df$padeg , df$madeg , use = "pairwise.complete" ,
+     method = "spearman")
+
+cor (df$padeg , df$madeg , use = "pairwise.complete" ,
+     method = "kendall")
+
+ggplot (df , aes (x = padeg , y = madeg)) +
+  geom_count ()
+```
+Szignifikáns pozitív erős együttjárás figyelhető meg a szülőpárok végzettsége között.
+
+
+<hr class = "border">
+## Két csoport között van különbség?
+
+Ezt a mérési szinttől függően különböző módszerekkel vizsgálhatjuk.
+
+### Páros mintás t próba (intervallum szint)
+
+Nem teljesen korrekt, de ha feltesszük, hogy a végzettség arányskálán mérhető változó, akkor:
+$H0: \mu_{apa} - \mu_{anya} = 0$ szülőpárok végzettségében nincs különbség  
+$H1: \mu_{apa} - \mu_{anya} \ne 0$ szülőpárok végzettségében nincs különbség  
+
+
+```{r}
+t.test (df$padeg , df$madeg , paired = T)
+# ugyanaz mint a különbségekre futtatott 1-mintás t próba
+t.test (df$padeg - df$madeg)
+```
+Nem szignifikáns a teszt, tehát nincs kimutatható különbség a szülőpárok végzettségében. 
+A különbség várható értéke 0. 
+
+
+### Független mintás t próba (ebben a kontextusban helytelen)
+
+Itt ugye nincs kapcsolat a szülők között, független mintaként vannak kezelve:
+
+$H0: \mu_{apa} = \mu_{anya}$ külön apák (mint férfiak) és anyák (mint nők) végzettségében nincs különbség 
+
+$H1: \mu_{apa} \ne \mu_{anya}$
+
+```{r}
+t.test (df$padeg , df$madeg,
+        var.equal = T)
+```
+Nem szignifikáns a teszt, tehát nincs kimutatható különbség az apák és anyák végzettségében.
+
+### Wilcoxon próba (ordinális szint, robusztus, ez a korrekt)
+
+*De mivel a végzettség ordinális skálán mér, ezért csak a robusztus __páros Wilcoxon__ próbát alkalmazhatjuk:*
+
+```{r}
+
+wilcox.test (df$padeg , df$madeg , paired = T)
+```
+Ami természetesen ugyanarra a konklúzióra vezet.
+
+<hr class = "border">
+## Skála változók között (intervallum szint, nem korrekt)
+
+### ANOVA (nem korrekt)
+
+Nem korrekt teszt, DE ha feltesszük, hogy folytonos mennyiségi változó az egyik és a másik szerint pedig csoportokat képzünk, akkor ANOVA-val is megvizsgálhatjuk a kapcsolatot. 
+*A független mintás t próba kiterjesztése k csoportra, ahol k épp 2.*
+
+$H0: \mu_{1} = ... =  \mu_{k}$ 
+
+$H1: van \ne$
+```{r}
+ANOVA <- aov (df$madeg ~ factor (df$padeg))
+summary (ANOVA)
+summary.lm (ANOVA)
+
+```
+
+### Lineáris regresszió (nem korrekt)
+
+Ha továbbá feltesszük, hogy a csoportok között is ugyanakkora a távolság (szintén nem korrekt), akkor:
+```{r}
+ANOVA <- aov (df$madeg ~ df$padeg)
+summary.lm (ANOVA)
+
+```
+
+
+Ekkor a kapcsolatszorossági mutató épp a Pearson-féle lineáris korrelációs együttható lesz. Hiszen ez nem más, mint egy kétváltozós lineáris regresszió.
+
+```{r}
+sqrt (summary.lm (ANOVA)$r.squared)
+
+cor (df$padeg , df$madeg , use = "pairwise.complete" )
+```
+
