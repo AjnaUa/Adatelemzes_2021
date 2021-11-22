@@ -8,7 +8,7 @@ description: |
   Tartalmazza a 2021 őszi félév házi feladat kiírásait.
 output:
   bookdown::html_book:
-    theme: bootstrap
+    theme: sandstone
 ---
 
 # Házi feladatok kiírásai
